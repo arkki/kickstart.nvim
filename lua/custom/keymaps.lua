@@ -17,3 +17,6 @@ vim.keymap.set('n', '<leader>sb', function()
     previewer = false,
   })
 end, { desc = '[b] Fuzzily search in current buffer' })
+
+-- Netrw
+vim.keymap.set('n', '<leader>e', ':Explore<CR>', { silent = true, desc = 'Open Netrw file explorer' })
