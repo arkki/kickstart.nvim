@@ -15,7 +15,7 @@ end
 
 -- Add JSON/JSONC Treesitter parsers
 do
-  local parsers = { 'json', 'jsonc' }
+  local parsers = { 'json' }
   require('nvim-treesitter').install(parsers)
 end
 
@@ -28,17 +28,3 @@ do
   conform.formatters_by_ft.jsonc = { 'prettier', stop_after_first = true }
 end
 
--- Optional: Install jsonls via Mason
--- Uncomment the code below to auto-install json-lsp on startup
---[[
-do
-  vim.schedule(function()
-    require('mason-registry').refresh():once('done', function()
-      local registry = require 'mason-registry'
-      if not registry.is_installed 'json-lsp' then
-        registry.get_package('json-lsp'):install()
-      end
-    end)
-  end)
-end
---]]
