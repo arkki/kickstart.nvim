@@ -1,4 +1,34 @@
 -- Custom keybindings for neo-tree and gitsigns
+do
+  -- Normal mode: Toggle comment line
+  vim.keymap.set('n', '<leader>/', function() require('Comment.api').toggle.linewise.current() end, { desc = 'Toggle comment line' })
+
+  -- Visual mode: Toggle comment selection (line, char, and block)
+  vim.keymap.set('x', '<leader>/', function()
+    local api = require('Comment.api')
+
+    -- Exit visual mode so vim.fn.visualmode() captures the correct mode
+    local esc = vim.api.nvim_replace_termcodes('<ESC>', true, false, true)
+    vim.api.nvim_feedkeys(esc, 'nx', false)
+
+    local mode = vim.fn.visualmode()
+    if mode == 'v' or mode == 'V' then
+      api.toggle.linewise(mode)
+    else
+      -- Block visual mode (Ctrl-V)
+      api.toggle.blockwise(mode)
+    end
+  end, { desc = 'Toggle comment selection' })
+
+  -- Slightly advanced example of overriding default behavior and theme
+  vim.keymap.set('n', '<leader>sb', function()
+    -- You can pass additional configuration to Telescope to change the theme, layout, etc.
+    require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
+      winblend = 10,
+      previewer = false,
+    })
+  end, { desc = '[b] Fuzzily search in current buffer' })
+end
 
 -- Neo-tree keybindings
 do
@@ -11,7 +41,7 @@ do
   vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(event)
       local bufnr = event.buf
-      local gitsigns = require('gitsigns')
+      local gitsigns = require 'gitsigns'
 
       local function map(mode, l, r, opts)
         opts = opts or {}
@@ -50,9 +80,8 @@ end
 
 -- Register which-key menu for gitsigns
 do
-  local wk = require('which-key')
-  wk.add({
+  local wk = require 'which-key'
+  wk.add {
     { '<leader>g', group = '[G]it', mode = 'n' },
-  })
+  }
 end
-
