@@ -28,6 +28,11 @@ do
       previewer = false,
     })
   end, { desc = '[b] Fuzzily search in current buffer' })
+
+  -- Search hidden and ignored files
+  vim.keymap.set('n', '<leader>si', function()
+    require('telescope.builtin').find_files { hidden = true, no_ignore = true }
+  end, { desc = '[S]earch [I]ncluding hidden and ignored files' })
 end
 
 -- Neo-tree keybindings
